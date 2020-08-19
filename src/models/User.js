@@ -6,24 +6,26 @@ module.exports = {
     try {
       const res = await client.query('SELECT senha FROM empregado WHERE login = $1', [login]);
       if (res.rows.length === 0) {
-        return { error: "Usuário não encontrado" }
+        return false
       }
       const oldPass = res.rows[0].senha;
-      console.log(oldPass)
+
       return bcrypt.compare(senha, oldPass)
     } catch (error) {
-      console.log(error)
       return false
     }
   },
 
-  async getUserById(id, callback) {
-    client.query('SELECT * FROM pessoa WHERE codp = $1', [id], (err, res) => {
-      callback(err, res.rows);
-    });
+  async getUserByLogin({ login }) {
+    try {
+      const res = await client.query('SELECT * FROM empregado WHERE login = $1', [login]);
+      return res.rows[0] || { error: true };
+    } catch (error) {
+      return { error: true };
+    }
   },
 
-  async userExists({ login, rg }, callback) {
+  async userExists({ login, rg }) {
     try {
       const res = await client.query('SELECT * FROM empregado WHERE login = $1 OR rg = $2', [login, rg]);
       return res.rows.length > 0;

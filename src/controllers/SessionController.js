@@ -6,13 +6,13 @@ class SessionController {
   async login (req, res) {
     const { login, senha } = req.body
 
-    const user = await User.userExists({
-      login, rg: ""
+    const user = await User.getUserByLogin({
+      login
     })
 
-    if (!user) {
+    if (!user || user.error) {
       return res.status(400).json({
-        error: 'Usuário não encontrado'
+        error: "Usuário não encontrado"
       })
     }
 
@@ -28,6 +28,8 @@ class SessionController {
     }, authConfig.secret, {
       expiresIn: authConfig.ttl
     });
+
+    user.senha = undefined;
     return res.json({
       user,
       token

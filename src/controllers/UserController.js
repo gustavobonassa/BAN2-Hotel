@@ -18,6 +18,7 @@ class UserController {
           rg
         });
 
+        user.senha = undefined;
         return res.send(user)
       } else {
         return res.send({ error: 'Usuário já existe' })
