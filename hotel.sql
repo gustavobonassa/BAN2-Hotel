@@ -41,6 +41,7 @@ CREATE TABLE IF NOT EXISTS tipoQuarto (
 	preco integer,
 	cama_extra integer DEFAULT 0,
   id_hotel integer,
+  ativo boolean DEFAULT TRUE,
 	CONSTRAINT tipoQuarto_pk PRIMARY KEY (id),
   CONSTRAINT tipoQuarto_fk0 FOREIGN KEY (id_hotel) REFERENCES hotel(id)
 ) WITH (
@@ -53,6 +54,7 @@ CREATE TABLE IF NOT EXISTS quarto (
 	andar integer,
 	numero integer,
 	id_hotel integer,
+  ativo boolean DEFAULT TRUE,
 	CONSTRAINT quarto_pk PRIMARY KEY (id),
 	CONSTRAINT quarto_fk0 FOREIGN KEY (id_tipo_quarto) REFERENCES tipoQuarto(id),
 	CONSTRAINT quarto_fk1 FOREIGN KEY (id_hotel) REFERENCES hotel(id)
@@ -67,6 +69,7 @@ CREATE TABLE IF NOT EXISTS empregado (
 	id_hotel integer,
   login varchar(40) NOT NULL UNIQUE,
   senha varchar(255),
+  ativo boolean DEFAULT TRUE,
 	CONSTRAINT empregado_pk PRIMARY KEY (id),
 	CONSTRAINT empregado_fk0 FOREIGN KEY (id_hotel) REFERENCES hotel(id)
 ) WITH (
@@ -78,6 +81,7 @@ CREATE TABLE IF NOT EXISTS limpeza (
 	data DATE,
 	id_quarto integer,
 	id_empregado integer,
+  ativo boolean DEFAULT TRUE,
 	CONSTRAINT limpeza_fk0 FOREIGN KEY (id_quarto) REFERENCES quarto(id),
 	CONSTRAINT limpeza_fk1 FOREIGN KEY (id_empregado) REFERENCES empregado(id)
 ) WITH (
@@ -92,6 +96,7 @@ CREATE TABLE IF NOT EXISTS reserva (
 	dataEntrada DATE,
 	dataSaida DATE,
 	aceita varchar(20),
+  ativo boolean DEFAULT TRUE,
 	CONSTRAINT reserva_pk PRIMARY KEY (id),
 	CONSTRAINT reserva_fk0 FOREIGN KEY (id_cliente) REFERENCES cliente(id),
 	CONSTRAINT reserva_fk1 FOREIGN KEY (id_tipo_quarto) REFERENCES tipoQuarto(id),
@@ -106,6 +111,7 @@ CREATE TABLE IF NOT EXISTS estadia (
 	dataEntrada DATE,
 	dataSaida DATE,
 	id_reserva integer DEFAULT NULL,
+  ativo boolean DEFAULT TRUE,
 	CONSTRAINT estadia_pk PRIMARY KEY (id),
 	CONSTRAINT estadia_fk0 FOREIGN KEY (id_quarto) REFERENCES quarto(id),
 	CONSTRAINT estadia_fk1 FOREIGN KEY (id_reserva) REFERENCES reserva(id)
@@ -117,6 +123,7 @@ CREATE TABLE IF NOT EXISTS servicos (
 	id SERIAL NOT NULL,
 	tipo varchar(50),
 	preco integer,
+  ativo boolean DEFAULT TRUE,
 	CONSTRAINT servicos_pk PRIMARY KEY (id)
 ) WITH (
 	OIDS=FALSE
@@ -128,6 +135,7 @@ CREATE TABLE IF NOT EXISTS extra (
 	id_servico integer,
 	data DATE,
 	hora TIME,
+  ativo boolean DEFAULT TRUE,
 	CONSTRAINT extra_fk0 FOREIGN KEY (id_estadia) REFERENCES estadia(id),
 	CONSTRAINT extra_fk1 FOREIGN KEY (id_servico) REFERENCES servicos(id)
 ) WITH (

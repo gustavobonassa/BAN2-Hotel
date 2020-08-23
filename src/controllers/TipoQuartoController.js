@@ -1,12 +1,12 @@
 const TipoQuarto = require('../models/TipoQuarto')
 
-class ClientController {
+class TipoQuartoController {
   async show(req, res, next) {
     try {
       const {
-        idCliente
+        idHotel
       } = req.params
-      const tipoQuarto = await TipoQuarto.getClientById(idCliente);
+      const tipoQuarto = await TipoQuarto.getTipoQuartoByHotel(idHotel);
 
       return res.send(tipoQuarto)
     } catch (err) {
@@ -20,7 +20,7 @@ class ClientController {
     } = req.body
 
     try {
-      const tipoQuarto = await TipoQuarto.createClient({
+      const tipoQuarto = await TipoQuarto.createTipoQuarto({
         tipo, preco, cama_extra, id_hotel,
       });
 
@@ -32,33 +32,33 @@ class ClientController {
 
   async update(req, res, next) {
     const {
-      tipo, preco, cama_extra, id_hotel,
+      id, tipo, preco, cama_extra,
     } = req.body
 
     try {
-      const tipoQuarto = await TipoQuarto.updateClient({
-        tipo, preco, cama_extra, id_hotel,
+      const tipoQuarto = await TipoQuarto.updateTipoQuarto({
+        id, tipo, preco, cama_extra,
       });
 
       return res.send(tipoQuarto)
     } catch (err) {
-      return res.status(400).send({ error: 'Falha ao atualizar o tipoQuarto' })
+      return res.status(400).send({ error: 'Falha ao atualizar o tipo do quarto' })
     }
   }
 
   async delete(req, res, next) {
     const {
-      idCliente
+      idTipoQuarto
     } = req.params
 
     try {
-      const resp = await TipoQuarto.deleteClient(idCliente);
+      const resp = await TipoQuarto.deleteTipoQuarto(idTipoQuarto);
 
       return res.send(resp)
     } catch (err) {
-      return res.status(400).send({ error: 'Falha ao deletar o tipoQuarto' })
+      return res.status(400).send({ error: 'Falha ao deletar o tipo do quarto' })
     }
   }
 }
 
-module.exports = new ClientController()
+module.exports = new TipoQuartoController()

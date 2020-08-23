@@ -1,6 +1,6 @@
 const Cliente = require('../models/Cliente')
 
-class ClientController {
+class ClienteController {
   async index(req, res, next) {
     try {
       const clientes = await Cliente.getAllClients();
@@ -27,13 +27,13 @@ class ClientController {
   async store(req, res, next) {
     const {
       rua, bairro, cidade, estado, numero,
-      nome, telefone,
+      nome, telefone, rg,
     } = req.body
 
     try {
       const cliente = await Cliente.createClient({
         rua, bairro, cidade, estado, numero,
-        nome, telefone,
+        nome, telefone, rg,
       });
 
       return res.send(cliente)
@@ -45,13 +45,13 @@ class ClientController {
   async update(req, res, next) {
     const {
       rua, bairro, cidade, estado, numero,
-      id, nome, telefone,
+      id, nome, telefone, rg,
     } = req.body
 
     try {
       const cliente = await Cliente.updateClient({
         rua, bairro, cidade, estado, numero,
-        id, nome, telefone,
+        id, nome, telefone, rg,
       });
 
       return res.send(cliente)
@@ -75,4 +75,4 @@ class ClientController {
   }
 }
 
-module.exports = new ClientController()
+module.exports = new ClienteController()

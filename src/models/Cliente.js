@@ -3,7 +3,7 @@ const client = require('../config/database');
 module.exports = {
   async getAllClients() {
     try {
-      const ret = await client.query('SELECT * FROM cliente JOIN endereco ON cliente.id_endereco = endereco.id WHERE ativo = true');
+      const ret = await client.query('SELECT *, cliente.id as id FROM cliente JOIN endereco ON cliente.id_endereco = endereco.id WHERE ativo = true');
 
       return ret.rows;
     } catch (error) {
@@ -28,13 +28,11 @@ module.exports = {
       } = clienteInfo;
       const ret = await client.query('INSERT INTO endereco(rua, bairro, cidade, estado, numero) VALUES($1, $2, $3, $4, $5) RETURNING *', [rua, bairro, cidade, estado, numero]);
       const newAddress = ret.rows[0];
-
       if (newAddress) {
         const {
-          nome, telefone
+          nome, telefone, rg,
         } = clienteInfo;
-        const newClient = await client.query('INSERT INTO cliente(nome, telefone, id_endereco) VALUES($1, $2, $3) RETURNING *', [nome, telefone, newAddress.id]);
-
+        const newClient = await client.query('INSERT INTO cliente(nome, telefone, id_endereco, rg) VALUES($1, $2, $3, $4) RETURNING *', [nome, telefone, newAddress.id, rg]);
         return { ...newAddress, ...newClient.rows[0] }
       }
 
