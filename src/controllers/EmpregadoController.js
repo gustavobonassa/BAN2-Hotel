@@ -1,17 +1,17 @@
-const User = require('../models/User')
+const Empregado = require('../models/Empregado')
 const bcrypt = require('bcryptjs')
 
-class UserController {
+class EmpregadoController {
 
   async store (req, res, next) {
     const { nome, login, senha, rg } = req.body
 
     try {
-      const exists = await User.userExists({ login, rg });
+      const exists = await Empregado.userExists({ login, rg });
 
       if (!exists) {
         const hashPass = await bcrypt.hash(senha, 8);
-        const user = await User.createUser({
+        const user = await Empregado.createUser({
           nome,
           login,
           senha: hashPass,
@@ -29,4 +29,4 @@ class UserController {
   }
 }
 
-module.exports = new UserController()
+module.exports = new EmpregadoController()

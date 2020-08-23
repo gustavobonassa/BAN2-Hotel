@@ -1,4 +1,4 @@
-const User = require('../models/User')
+const Empregado = require('../models/Empregado')
 const authConfig = require('../config/auth')
 const jwt = require('jsonwebtoken')
 
@@ -6,7 +6,7 @@ class SessionController {
   async login (req, res) {
     const { login, senha } = req.body
 
-    const user = await User.getUserByLogin({
+    const user = await Empregado.getUserByLogin({
       login
     })
 
@@ -16,7 +16,7 @@ class SessionController {
       })
     }
 
-    const logged = await User.getAutentication({ login, senha });
+    const logged = await Empregado.getAutentication({ login, senha });
     if (!logged) {
       return res.status(400).json({
         error: 'Falha no login'
