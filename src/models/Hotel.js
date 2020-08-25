@@ -13,11 +13,19 @@ module.exports = {
 
   async getHotelById(idHotel) {
     try {
-      const ret = await client.query('SELECT * FROM hotel JOIN endereco ON hotel.id_endereco = endereco.id WHERE ativo = true AND hotel.id = $1', [idHotel]);
+      const ret = await client.query('SELECT *, hotel.id as id FROM hotel JOIN endereco ON hotel.id_endereco = endereco.id WHERE ativo = true AND hotel.id = $1', [idHotel]);
 
-      return ret.rows[0];
+      const quartos = await client.query('SELECT *, quarto.id as id FROM quarto JOIN tipoQuarto ON quarto.id_tipo_quarto = tipoQuarto.id WHERE quarto.ativo = true AND quarto.id_hotel = $1', [idHotel]);
+
+      const tipoquartos = await client.query('SELECT * FROM tipoQuarto WHERE ativo = true AND id_hotel = $1', [idHotel]);
+
+      return {
+        ...ret.rows[0],
+        quartos: quartos.rows,
+        tipo_quarto: tipoquartos.rows,
+      };
     } catch (error) {
-      return { error: "Falha ao cadastrar o hotel", message: error }
+      return { error: "Falha ao pegar o hotel", message: error }
     }
   },
 
