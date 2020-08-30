@@ -3,7 +3,7 @@ const client = require('../config/database');
 module.exports = {
   async getAllHotels() {
     try {
-      const ret = await client.query('SELECT * FROM hotel JOIN endereco ON hotel.id_endereco = endereco.id WHERE ativo = true');
+      const ret = await client.query('SELECT *, hotel.id as id FROM hotel JOIN endereco ON hotel.id_endereco = endereco.id WHERE hotel.ativo = true ORDER BY hotel.id');
 
       return ret.rows;
     } catch (error) {
@@ -13,16 +13,22 @@ module.exports = {
 
   async getHotelById(idHotel) {
     try {
-      const ret = await client.query('SELECT *, hotel.id as id FROM hotel JOIN endereco ON hotel.id_endereco = endereco.id WHERE ativo = true AND hotel.id = $1', [idHotel]);
+      const ret = await client.query(`SELECT *, hotel.id as id FROM hotel JOIN endereco ON hotel.id_endereco = endereco.id WHERE hotel.ativo = true AND hotel.id = $1`, [idHotel]);
 
       const quartos = await client.query('SELECT *, quarto.id as id FROM quarto JOIN tipoQuarto ON quarto.id_tipo_quarto = tipoQuarto.id WHERE quarto.ativo = true AND quarto.id_hotel = $1', [idHotel]);
 
       const tipoquartos = await client.query('SELECT * FROM tipoQuarto WHERE ativo = true AND id_hotel = $1', [idHotel]);
 
+      const reservas = await client.query('SELECT *, reserva.id as id FROM reserva JOIN cliente ON cliente.id = reserva.id_cliente WHERE reserva.ativo = true AND reserva.id_hotel = $1', [idHotel]);
+
+      const estadias = await client.query('SELECT *, estadia.id as id, estadia.dataentrada as dataentrada, estadia.datasaida as datasaida FROM estadia JOIN reserva ON reserva.id = estadia.id_reserva LEFT JOIN cliente ON cliente.id = reserva.id_cliente JOIN quarto ON quarto.id = estadia.id_quarto WHERE estadia.ativo = true AND reserva.id_hotel = $1', [idHotel]);
+
       return {
         ...ret.rows[0],
         quartos: quartos.rows,
         tipo_quarto: tipoquartos.rows,
+        reservas: reservas.rows,
+        estadias: estadias.rows,
       };
     } catch (error) {
       return { error: "Falha ao pegar o hotel", message: error }

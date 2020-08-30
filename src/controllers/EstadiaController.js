@@ -16,17 +16,17 @@ class EstadiaController {
 
   async store(req, res, next) {
     const {
-      id_cliente, id_tipo_estadia, id_hotel, dataentrada, datasaida
+      id_quarto, dataentrada, datasaida, id_reserva
     } = req.body
 
     try {
       const reserva = await Estadia.createEstadia({
-        id_cliente, id_tipo_estadia, id_hotel, dataentrada, datasaida
+        id_quarto, dataentrada, datasaida, id_reserva
       });
 
       return res.send(reserva)
     } catch (err) {
-      return res.status(400).send({ error: 'Falha ao cadastrar a reserva' })
+      return res.status(400).send({ error: 'Falha ao cadastrar a estadia' })
     }
   }
 
@@ -48,15 +48,14 @@ class EstadiaController {
 
   async delete(req, res, next) {
     const {
-      idHotel
+      idEstadia
     } = req.params
-
     try {
-      const resp = await Estadia.deleteEstadia(idHotel);
+      const resp = await Estadia.deleteEstadia(idEstadia);
 
       return res.send(resp)
     } catch (err) {
-      return res.status(400).send({ error: 'Falha ao deletar a reserva' })
+      return res.status(400).send({ error: 'Falha ao deletar a estadia' })
     }
   }
 }

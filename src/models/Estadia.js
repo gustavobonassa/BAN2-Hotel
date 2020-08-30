@@ -3,7 +3,7 @@ const client = require('../config/database');
 module.exports = {
   async getEstadiasByHotel(idHotel) {
     try {
-      const ret = await client.query('SELECT * FROM estadia JOIN reserva ON estadia.id_reserva = reserva.id JOIN cliente ON reserva.id_cliente = cliente.id JOIN tipoQuarto ON reserva.id_tipo_quarto = tipoQuarto.id WHERE reserva.ativo = true AND id_hotel = $1', [idHotel]);
+      const ret = await client.query('SELECT * FROM estadia JOIN reserva ON estadia.id_reserva = reserva.id JOIN cliente ON reserva.id_cliente = cliente.id JOIN tipoQuarto ON reserva.id_tipo_quarto = tipoQuarto.id WHERE estadia.ativo = true AND id_hotel = $1', [idHotel]);
 
       return ret.rows;
     } catch (error) {

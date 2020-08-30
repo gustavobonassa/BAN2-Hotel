@@ -44,7 +44,7 @@ routes.delete('/reserva/:idReserva', controllers.ReservaController.delete)
 routes.get('/estadia/:idHotel', controllers.EstadiaController.show)
 routes.post('/estadia', controllers.EstadiaController.store)
 routes.patch('/estadia', controllers.EstadiaController.update)
-routes.delete('/estadia/:idReserva', controllers.EstadiaController.delete)
+routes.delete('/estadia/:idEstadia', controllers.EstadiaController.delete)
 // Extra
 routes.get('/extra/:idEstadia', controllers.ExtraController.show)
 routes.post('/extra', controllers.ExtraController.store)
