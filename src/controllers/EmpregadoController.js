@@ -2,6 +2,15 @@ const Empregado = require('../models/Empregado')
 const bcrypt = require('bcryptjs')
 
 class EmpregadoController {
+  async index(req, res, next) {
+    try {
+      const empregados = await Empregado.getAllEmpregado();
+
+      return res.send(empregados)
+    } catch (err) {
+      return res.status(400).send({ error: 'Falha ao pegar lista de Clientes' })
+    }
+  }
 
   async store (req, res, next) {
     const { nome, login, senha, rg } = req.body

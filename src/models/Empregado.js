@@ -16,6 +16,16 @@ module.exports = {
     }
   },
 
+  async getAllEmpregado() {
+    try {
+      const ret = await client.query('SELECT *, hotel.nome as nomeHotel, empregado.id as id, empregado.nome as nome FROM empregado JOIN hotel ON hotel.id = empregado.id_hotel WHERE empregado.ativo = true');
+
+      return ret.rows;
+    } catch (error) {
+      return { error: "Falha ao listar os empregados", message: error }
+    }
+  },
+
   async getUserByLogin({ login }) {
     try {
       const res = await client.query('SELECT * FROM empregado WHERE login = $1', [login]);

@@ -8,6 +8,9 @@ routes.post('/login', controllers.SessionController.login)
 
 routes.use(authMiddleware)
 routes.post('/register', controllers.EmpregadoController.store)
+// Empregado
+routes.get('/empregado', controllers.EmpregadoController.index)
+routes.post('/empregado', controllers.EmpregadoController.store)
 // Hotel
 routes.get('/hotel', controllers.HotelController.index)
 routes.get('/hotel/:idHotel', controllers.HotelController.show)

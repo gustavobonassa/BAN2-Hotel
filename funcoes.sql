@@ -26,7 +26,6 @@ create trigger validaRG before insert on cliente
 for each row execute procedure validaRG();
 
 
-
 create or replace function validaEstadia() returns trigger as
 $$
 begin
@@ -40,3 +39,18 @@ language plpgsql;
 
 create trigger validaEstadia before insert on estadia
 for each row execute procedure validaEstadia();
+
+
+create or replace function validaNovoQuarto() returns trigger as
+$$
+begin
+	if(select count(id) from quarto where numero = NEW.numero and andar = NEW.andar and id_hotel = NEW.id_hotel and ativo = true) > 0 then
+    raise exception 'Esse quarto já foi criado!';
+  end if;
+  return NEW;
+end;
+$$
+language plpgsql;
+
+create trigger validaNovoQuarto before insert on quarto
+for each row execute procedure validaNovoQuarto();
