@@ -44,9 +44,9 @@ module.exports = {
     }
   },
 
-  async createUser({ nome, login, senha, rg }) {
+  async createUser({ nome, login, senha, rg, id_hotel }) {
     try {
-      const res = await client.query('INSERT INTO empregado(nome, login, senha, rg) VALUES($1, $2, $3, $4) RETURNING *', [nome, login, senha, rg])
+      const res = await client.query('INSERT INTO empregado(nome, login, senha, rg, id_hotel) VALUES($1, $2, $3, $4, $5) RETURNING *', [nome, login, senha, rg, id_hotel])
       return res.rows[0];
     } catch (error) {
       return { error: "Falha ao inserir usuário", message: error }

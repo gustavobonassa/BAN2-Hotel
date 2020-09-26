@@ -1,0 +1,34 @@
+Endereco (#id, rua, bairro, cidade, estado)
+Cliente (#RG, nome, telefone, id_endereco)
+	id_endereco referencia Endereco
+
+Hotel (#id, nome, telefone, id_endereco)
+id_endereco referencia Endereco
+
+Quarto (#id, tipoQuarto, andar, numero, id_hotel)
+	id_hotel referencia Hotel
+tipoQuarto referencia TipoQuarto
+
+TipoQuarto (#id, tipo, preço, camaExtra)
+
+Empregado (#id, RG, nome, id_hotel, login, senha)
+	id_hotel referencia Hotel
+
+Serviços (#id, tipo, preço)
+
+Extra (id_estadia, id_servico, data, hora)
+	id_estadia referencia Estadia
+	id_servico referencia Servicos
+
+Reserva (#id, id_cliente, tipoQuarto, id_hotel, dataEntrada, dataSaida, aceita)
+	id_cliente referencia Cliente
+	id_hotel referencia Hotel
+	tipoQuarto referencia TipoQuarto
+
+Estadia (#id, id_quarto, dataEntrada, dataSaida, codReserva)
+	codReserva referencia Reserva
+	id_quarto referencia Quarto
+
+Limpeza (data, id_quarto, codEmpregado)
+	id_quarto referencia Quarto
+

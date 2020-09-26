@@ -13,7 +13,7 @@ class EmpregadoController {
   }
 
   async store (req, res, next) {
-    const { nome, login, senha, rg } = req.body
+    const { nome, login, senha, rg, id_hotel } = req.body
 
     try {
       const exists = await Empregado.userExists({ login, rg });
@@ -24,7 +24,8 @@ class EmpregadoController {
           nome,
           login,
           senha: hashPass,
-          rg
+          rg,
+          id_hotel,
         });
 
         user.senha = undefined;
