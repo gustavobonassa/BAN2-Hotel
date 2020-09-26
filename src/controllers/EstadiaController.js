@@ -1,4 +1,4 @@
-const Estadia = require('../models/Estadia')
+const Estadia = require('../modelsMongoDB/Estadia')
 
 class EstadiaController {
   async show(req, res, next) {

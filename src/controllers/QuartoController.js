@@ -1,4 +1,4 @@
-const Quarto = require('../models/Quarto')
+const Quarto = require('../modelsMongoDB/Quarto')
 
 class QuartoController {
   async show(req, res, next) {

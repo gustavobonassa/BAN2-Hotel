@@ -1,4 +1,4 @@
-const Reserva = require('../models/Reserva')
+const Reserva = require('../modelsMongoDB/Reserva')
 
 class ReservaController {
   async show(req, res, next) {
