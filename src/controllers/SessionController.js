@@ -1,4 +1,4 @@
-const Empregado = require('../models/Empregado')
+const Empregado = require('../modelsMongoDB/Empregado')
 const authConfig = require('../config/auth')
 const jwt = require('jsonwebtoken')
 

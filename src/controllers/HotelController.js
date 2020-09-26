@@ -1,4 +1,4 @@
-const Hotel = require('../models/Hotel')
+const Hotel = require('../modelsMongoDB/Hotel')
 
 class HotelController {
   async index(req, res, next) {

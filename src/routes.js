@@ -5,9 +5,9 @@ const authMiddleware = require('./middlewares/auth');
 const routes = express.Router()
 
 routes.post('/login', controllers.SessionController.login)
+routes.post('/register', controllers.EmpregadoController.store)
 
 routes.use(authMiddleware)
-routes.post('/register', controllers.EmpregadoController.store)
 // Empregado
 routes.get('/empregado', controllers.EmpregadoController.index)
 routes.post('/empregado', controllers.EmpregadoController.store)

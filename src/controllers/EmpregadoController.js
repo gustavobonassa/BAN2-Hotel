@@ -1,4 +1,4 @@
-const Empregado = require('../models/Empregado')
+const Empregado = require('../modelsMongoDB/Empregado')
 const bcrypt = require('bcryptjs')
 
 class EmpregadoController {

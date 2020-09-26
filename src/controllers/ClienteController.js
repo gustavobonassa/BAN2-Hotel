@@ -1,4 +1,4 @@
-const Cliente = require('../models/Cliente')
+const Cliente = require('../modelsMongoDB/Cliente')
 
 class ClienteController {
   async index(req, res, next) {
