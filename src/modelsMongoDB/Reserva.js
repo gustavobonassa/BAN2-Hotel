@@ -1,3 +1,4 @@
+const { ObjectId } = require('mongodb');
 const client = require('../config/mongodb');
 
 module.exports = {
@@ -20,8 +21,12 @@ module.exports = {
 
   async createReserva(reservaInfo) {
     try {
-      const res = await client.db("ban2hotel").collection("reserva").insertOne({...reservaInfo, ativo: true});
-
+      const res = await client.db("ban2hotel").collection("reserva").insertOne({
+        ...reservaInfo,
+        ativo: true,
+        id_hotel: ObjectId(reservaInfo.id_hotel)
+      });
+      console.log(res)
       res.ops[0].id = res.ops[0]._id;
       delete res.ops[0]._id;
       return res.ops[0];

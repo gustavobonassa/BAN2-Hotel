@@ -52,7 +52,6 @@ module.exports = {
       const res = await client.db("ban2hotel").collection("empregado").findOne(myobj);
       return !!res;
     } catch (error) {
-      console.log(error)
       return false;
     }
   },

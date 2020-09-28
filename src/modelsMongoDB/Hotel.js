@@ -21,23 +21,30 @@ module.exports = {
     try {
       const ret = await client.db("ban2hotel").collection("hotel").findOne({ _id: ObjectId(idHotel) });
 
-      const quartos = await client.db("ban2hotel").collection("quarto").find({ id_hotel: ObjectId(idHotel) }).toArray();
+      const quartos = await client.db("ban2hotel").collection("quarto").find({ id_hotel: ObjectId(idHotel), ativo: true }).toArray();
 
-      const tipoquartos = await client.db("ban2hotel").collection("tipoquarto").find({ id_hotel: ObjectId(idHotel) }).toArray();
+      const quartos2 = await client.db("ban2hotel").collection("quarto").aggregate([
+        { $lookup:
+            {
+              from: 'tipoquarto',
+              localField: 'id_tipo_quarto',
+              foreignField: '_id',
+              as: 'tipoquarto2'
+            }
+          }
+        ]).toArray();
 
-      const reservas = await client.db("ban2hotel").collection("reserva").find({ id_hotel: ObjectId(idHotel) }).toArray();
+      const tipoquartos = await client.db("ban2hotel").collection("tipoquarto").find({ id_hotel: ObjectId(idHotel), ativo: true }).toArray();
 
-      const estadias = await client.db("ban2hotel").collection("estadia").find({ id_hotel: ObjectId(idHotel) }).toArray();
+      const reservas = await client.db("ban2hotel").collection("reserva").find({ id_hotel: ObjectId(idHotel), ativo: true }).toArray();
+      console.log(reservas)
+
+      const estadias = await client.db("ban2hotel").collection("estadia").find({ id_hotel: ObjectId(idHotel), ativo: true }).toArray();
 
       ret.id = ret._id;
       delete ret._id;
       return {
-        ...ret.map(e => {
-          return {
-            ...e,
-            id: e._id,
-          }
-        }),
+        ...ret,
         quartos: quartos,
         tipo_quarto: tipoquartos,
         reservas: reservas,

@@ -16,12 +16,12 @@ class EstadiaController {
 
   async store(req, res, next) {
     const {
-      id_quarto, dataentrada, datasaida, id_reserva
+      id_quarto, dataentrada, datasaida, id_reserva, id_hotel
     } = req.body
 
     try {
       const reserva = await Estadia.createEstadia({
-        id_quarto, dataentrada, datasaida, id_reserva
+        id_quarto, dataentrada, datasaida, id_reserva, id_hotel
       });
 
       return res.send(reserva)

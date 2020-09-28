@@ -19,7 +19,11 @@ module.exports = {
 
   async createTipoQuarto(tipoQuartoInfo) {
     try {
-      const res = await client.db("ban2hotel").collection("tipoquarto").insertOne({...tipoQuartoInfo, ativo: true});
+      const res = await client.db("ban2hotel").collection("tipoquarto").insertOne({
+        ...tipoQuartoInfo,
+        ativo: true,
+        id_hotel: ObjectId(tipoQuartoInfo.id_hotel)
+      });
       res.ops[0].id = res.ops[0]._id;
       delete res.ops[0]._id;
       return res.ops[0];
