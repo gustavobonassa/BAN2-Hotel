@@ -19,35 +19,44 @@ module.exports = {
 
   async getHotelById(idHotel) {
     try {
+      const clientes = await client.db("ban2hotel").collection("cliente").find({}).toArray();
+
       const ret = await client.db("ban2hotel").collection("hotel").findOne({ _id: ObjectId(idHotel) });
-
-      const quartos = await client.db("ban2hotel").collection("quarto").find({ id_hotel: ObjectId(idHotel), ativo: true }).toArray();
-
-      const quartos2 = await client.db("ban2hotel").collection("quarto").aggregate([
-        { $lookup:
-            {
-              from: 'tipoquarto',
-              localField: 'id_tipo_quarto',
-              foreignField: '_id',
-              as: 'tipoquarto2'
-            }
-          }
-        ]).toArray();
 
       const tipoquartos = await client.db("ban2hotel").collection("tipoquarto").find({ id_hotel: ObjectId(idHotel), ativo: true }).toArray();
 
+      const quartos = await client.db("ban2hotel").collection("quarto").find({ id_hotel: ObjectId(idHotel), ativo: true }).toArray();
+
+      const newQuarto = [];
+      quartos.map((q) => {
+        const ntq = tipoquartos.find((tq) => tq._id == q.id_tipo_quarto);
+        newQuarto.push({
+          ...q,
+          preco: ntq.preco,
+          tipo: ntq.tipo,
+        })
+      })
+
       const reservas = await client.db("ban2hotel").collection("reserva").find({ id_hotel: ObjectId(idHotel), ativo: true }).toArray();
-      console.log(reservas)
 
       const estadias = await client.db("ban2hotel").collection("estadia").find({ id_hotel: ObjectId(idHotel), ativo: true }).toArray();
+
+      const newReservas = [];
+      reservas.map((q) => {
+        const ntq = clientes.find((cli) => cli._id == q.id_cliente);
+        newReservas.push({
+          ...q,
+          nome: ntq.nome,
+        })
+      });
 
       ret.id = ret._id;
       delete ret._id;
       return {
         ...ret,
-        quartos: quartos,
+        quartos: newQuarto,
         tipo_quarto: tipoquartos,
-        reservas: reservas,
+        reservas: newReservas,
         estadias: estadias,
       };
     } catch (error) {

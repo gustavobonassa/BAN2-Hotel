@@ -26,7 +26,6 @@ module.exports = {
         ativo: true,
         id_hotel: ObjectId(reservaInfo.id_hotel)
       });
-      console.log(res)
       res.ops[0].id = res.ops[0]._id;
       delete res.ops[0]._id;
       return res.ops[0];
